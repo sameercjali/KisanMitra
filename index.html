@@ -147,8 +147,8 @@
       const locationSelect = document.getElementById('location');
       const commoditySelect = document.getElementById('commodity');
 
-      const marketsUrl = `https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?api-key=${apiKey}&format=json&fields=market&limit=500`;
-      const commoditiesUrl = `https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?api-key=${apiKey}&format=json&fields=commodity&limit=1000`;
+      const marketsUrl = const marketsUrl = "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?api-key=${apiKey}&format=json&filters[state]=Telangana&fields=market&limit=500";
+      const commoditiesUrl = "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?api-key=${apiKey}&format=json&fields=commodity&limit=1000";
       
       try {
         const [marketsResponse, commoditiesResponse] = await Promise.all([
@@ -224,6 +224,7 @@
 
 </body>
 </html>
+
 
 
 
