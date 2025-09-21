@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>KisanMitraa - Smart Agriculture Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #68a820;
+      --secondary-color: #f2fce8;
+      --text-color: #333;
+      --bg-color: #f9fff6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+
+    header { 
+      text-align: center; 
+      background: url('https://img.freepik.com/premium-photo/landscape-green-rice-field-rice-farm-with-mountain-as-background-rural-green-rice-paddy-field-organic-rice-farm-asia-paddy-field-tropical-landscape-white-clouds-sky-agricultural-farm_33867-1893.jpg?w=1480') 
+        no-repeat center/cover; 
+      padding: 40px 20px; 
+      color: white; 
+    }
+    header h1 { font-size: 2.5em; margin: 10px 0; color: black; }
+    nav { margin-top: 10px; }
+    nav a { margin: 0 15px; color: #fff; text-decoration: none; font-weight: 600; font-size: 1.1em; transition: color 0.3s; }
+    nav a:hover { text-decoration: underline; color: #d4ffd6; }
+    .logo { height: 100px; border-radius: 10px; }
+
+    .main-container {
+      display: grid;
+      grid-template-columns: 1.2fr 1.8fr; /* chatbot wider */
+      gap: 20px;
+      padding: 30px;
+      max-width: 1300px;
+      margin: auto;
+      align-items: stretch;
+    }
+    .left-column { display: flex; flex-direction: column; gap: 20px; }
+    .card-section { background-color: var(--secondary-color); border-radius: 15px; padding: 25px; display: flex; flex-direction: column; }
+
+    h2 { color: var(--primary-color); border-left: 5px solid var(--primary-color); padding-left: 15px; margin-bottom: 15px; }
+
+    form { background-color: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); max-width: 100%; margin-top: 15px; }
+    label { display: block; margin-top: 10px; font-weight: 600; }
+    input, select { padding: 10px; width: 100%; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 1em; }
+    input[type="button"] { background-color: var(--primary-color); color: white; font-weight: bold; margin-top: 15px; transition: background-color 0.3s; }
+    input[type="button"]:hover { background-color: #55891a; }
+
+    #priceResult { margin-top: 15px; font-weight: bold; font-size: 1.1em; }
+
+    iframe { border-radius: 10px; border: 1px solid #ccc; width: 100%; }
+
+    /* chatbot fills full height */
+    .right-column { display: flex; flex-direction: column; height: 100%; }
+    .right-column iframe { flex: 1; min-height: 100%; }
+
+    /* center Google Form */
+    .contact-form-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0;
+    }
+    .contact-form-wrapper iframe { height: 400px; max-width: 100%; }
+
+    footer { background: #eaf7e0; padding: 20px; text-align: center; font-size: 0.9em; color: #555; margin-top: 30px; }
+    footer a { color: #333; text-decoration: underline; }
+
+    @media (max-width: 900px) {
+      .main-container { grid-template-columns: 1fr; }
+      .left-column { order: 2; }
+      .right-column { order: 1; height: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="C:\Users\samee\OneDrive\ドキュメント\Desktop\kisanMitra\download.png" class="logo" alt="KisanMitra Logo">
+    <h1>KisanMitra</h1>
+    <nav>
+      <a href="#prices">Market Prices</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="main-container">
+    <!-- LEFT COLUMN -->
+    <div class="left-column">
+      <section id="prices" class="card-section">
+        <h2>🌾 Real-Time Market Prices</h2>
+        <form id="priceForm">
+          <label for="commodity"><i class="fas fa-seedling"></i> Select Commodity:</label>
+          <select id="commodity" name="commodity">
+              <option>Loading commodities...</option>
+          </select>
+          
+          <label for="location"><i class="fas fa-map-marker-alt"></i> Select Location:</label>
+          <select id="location" name="location">
+              <option>Loading locations...</option>
+          </select>
+          
+          <input type="button" value="Get Price" onclick="fetchPrice()">
+        </form>
+        <div id="priceResult"></div>
+      </section>
+
+      <section id="contact" class="card-section">
+        <h2><i class="fas fa-mobile-alt"></i> Contact Us</h2>
+        <div class="contact-form-wrapper">
+          <iframe src="https://customgform.com/form/cmfqitp5k00hbwnknztx0jjjc" scrolling="no" frameborder="0"></iframe>
+        </div>
+      </section>
+
+      <section class="card-section">
+        <h2><i class="fas fa-phone"></i> Our Contact</h2>
+        <h1> call 09513886363 for offline service</h1>
+      </section>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-column card-section">
+      <h2>Chatbot</h2>
+      <p>Ask our AI assistant for advice on crops, soil, pests, and more.</p>
+      <iframe src="https://sameercjali-kisanmitra.hf.space" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 <strong>KisanMitraa</strong> | Smart Agriculture Platform</p>
+    <p>
+      Images: <a href="https://unsplash.com/s/photos/agriculture">Unsplash</a> |
+      Icons: <a href="https://www.flaticon.com/free-icons/agriculture">Flaticon</a> |
+      Templates: <a href="https://www.canva.com/templates/s/farm/">Canva</a>
+    </p>
+  </footer>
+
+  <script>
+    const apiKey = "579b464db66ec23bdd000001bfc0f0ea9fa34b1b51ba07f09d6a733d"; // PASTE YOUR API KEY HERE
+    
+    document.addEventListener('DOMContentLoaded', populateDropdowns);
+
+    async function populateDropdowns() {
+      const locationSelect = document.getElementById('location');
+      const commoditySelect = document.getElementById('commodity');
+
+      const marketsUrl = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=${apiKey}&format=json&filters[state]=Telangana&fields=market&limit=500`;
+      const commoditiesUrl = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=${apiKey}&format=json&fields=commodity&limit=1000`;
+      
+      try {
+        const [marketsResponse, commoditiesResponse] = await Promise.all([
+          fetch(marketsUrl),
+          fetch(commoditiesUrl)
+        ]);
+
+        const marketsData = await marketsResponse.json();
+        const commoditiesData = await commoditiesResponse.json();
+        
+        if (marketsData.records) {
+          const uniqueMarkets = [...new Set(marketsData.records.map(record => record.market))].sort();
+          locationSelect.innerHTML = '<option value="">-- Select a Location --</option>';
+          uniqueMarkets.forEach(market => {
+            const option = document.createElement('option');
+            option.value = market;
+            option.textContent = market;
+            locationSelect.appendChild(option);
+          });
+        }
+
+        if (commoditiesData.records) {
+          const uniqueCommodities = [...new Set(commoditiesData.records.map(record => record.commodity))].sort();
+          commoditySelect.innerHTML = '<option value="">-- Select a Commodity --</option>';
+          uniqueCommodities.forEach(commodity => {
+            const option = document.createElement('option');
+            option.value = commodity;
+            option.textContent = commodity;
+            commoditySelect.appendChild(option);
+          });
+        }
+      } catch (error) {
+        console.error("Failed to populate dropdowns:", error);
+        locationSelect.innerHTML = '<option>Failed to load data</option>';
+        commoditySelect.innerHTML = '<option>Failed to load data</option>';
+      }
+    }
+
+    async function fetchPrice() {
+      const commodity = document.getElementById("commodity").value;
+      const location = document.getElementById("location").value;
+      const resultDiv = document.getElementById("priceResult");
+
+      if (!commodity || !location) {
+        resultDiv.innerText = "Please select both a commodity and a location.";
+        return;
+      }
+
+      resultDiv.innerText = "Fetching market price...";
+      const apiUrl = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=${apiKey}&format=json&filters[market]=${location}&filters[commodity]=${commodity}&limit=1`;
+
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error("Network response was not ok.");
+        
+        const data = await response.json();
+
+        if (data.records && data.records.length > 0) {
+          const latestRecord = data.records[0];
+          const price = latestRecord.modal_price;
+          const date = latestRecord.arrival_date;
+          
+          resultDiv.innerHTML = `<strong>${commodity}</strong> in ${location}: ₹${price}/qtl | Updated: ${date}`;
+        } else {
+          resultDiv.innerText = `Sorry, no price data found for ${commodity} in ${location}.`;
+        }
+      } catch (error) {
+        console.error("Fetch Error:", error);
+        resultDiv.innerText = "Could not fetch price data. Please try again later.";
+      }
+    }
+  </script>
+
+</body>
+</html>
