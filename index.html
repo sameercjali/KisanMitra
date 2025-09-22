@@ -97,6 +97,8 @@
               <option value="Paddy">Paddy (Dhan)</option>
               <option value="Wheat">Wheat</option>
               <option value="Cotton">Cotton</option>
+              <option value="Maize">Maize</option>
+              <option value="Turmeric">Turmeric</option>
           </select>
           
           <label for="location"><i class="fas fa-map-marker-alt"></i> Select Location:</label>
@@ -104,7 +106,14 @@
               <option value="">-- Select a Location --</option>
               <option value="Warangal">Warangal</option>
               <option value="Hyderabad">Hyderabad</option>
+              <option value="Kodad">Kodad</option>
               <option value="Karimnagar">Karimnagar</option>
+              <option value="Nizamabad">Nizamabad</option>
+              <option value="Adilabad">Adilabad</option>
+              <option value="Khammam">Khammam</option>
+              <option value="Mahbubnagar">Mahbubnagar</option>
+              <option value="Nalgonda">Nalgonda</option>
+              <option value="Sangareddy">Sangareddy</option>
           </select>
           
           <input type="button" value="Get Price" onclick="fetchPrice()">
@@ -153,9 +162,16 @@
 
     // Default price data
     const priceData = {
-      "Paddy_Warangal": { price: 2320, unit: "₹/qtl", date: "2025-01-15" },
-      "Wheat_Hyderabad": { price: 2100, unit: "₹/qtl", date: "2025-01-14" },
-      "Cotton_Karimnagar": { price: 6200, unit: "₹/qtl", date: "2025-01-13" }
+      "Paddy_Warangal": { price: 2320, unit: "₹/qtl", date: "22/09/2025" },
+      "Wheat_Hyderabad": { price: 2100, unit: "₹/qtl", date: "22/09/2025" },
+      "Cotton_Kodad": { price: 6200, unit: "₹/qtl", date: "22/09/2025" },
+      "Maize_Nizamabad": { price: 1850, unit: "₹/qtl", date: "22/09/2025" },
+      "Turmeric_Khammam": { price: 7200, unit: "₹/qtl", date: "22/09/2025" },
+      "Paddy_Karimnagar": { price: 2280, unit: "₹/qtl", date: "22/09/2025" },
+      "Wheat_Adilabad": { price: 2000, unit: "₹/qtl", date: "22/09/2025" },
+      "Cotton_Mahbubnagar": { price: 6100, unit: "₹/qtl", date: "22/09/2025" },
+      "Maize_Nalgonda": { price: 1900, unit: "₹/qtl", date: "22/09/2025" },
+      "Turmeric_Sangareddy": { price: 7100, unit: "₹/qtl", date: "22/09/2025" }
     };
 
     function fetchPrice() {
