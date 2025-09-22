@@ -31,7 +31,7 @@
 
     .main-container {
       display: grid;
-      grid-template-columns: 1.2fr 1.8fr; /* chatbot wider */
+      grid-template-columns: 1.2fr 1.8fr;
       gap: 20px;
       padding: 30px;
       max-width: 1300px;
@@ -45,7 +45,7 @@
 
     form { background-color: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); max-width: 100%; margin-top: 15px; }
     label { display: block; margin-top: 10px; font-weight: 600; }
-    input, select { padding: 10px; width: 100%; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 1em; }
+    select { padding: 10px; width: 100%; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 1em; }
     input[type="button"] { background-color: var(--primary-color); color: white; font-weight: bold; margin-top: 15px; transition: background-color 0.3s; }
     input[type="button"]:hover { background-color: #55891a; }
 
@@ -53,11 +53,9 @@
 
     iframe { border-radius: 10px; border: 1px solid #ccc; width: 100%; }
 
-    /* chatbot fills full height */
     .right-column { display: flex; flex-direction: column; height: 100%; }
     .right-column iframe { flex: 1; min-height: 100%; }
 
-    /* center Google Form */
     .contact-form-wrapper {
       display: flex;
       justify-content: center;
@@ -79,7 +77,7 @@
 <body>
 
   <header>
-    <img src="your-logo.png" class="logo" alt="KisanMitra Logo">
+    <img src="download.png" class="logo" alt="KisanMitra Logo">
     <h1>KisanMitra</h1>
     <nav>
       <a href="#prices">Market Prices</a>
@@ -95,12 +93,18 @@
         <form id="priceForm">
           <label for="commodity"><i class="fas fa-seedling"></i> Select Commodity:</label>
           <select id="commodity" name="commodity">
-              <option>Loading commodities...</option>
+              <option value="">-- Select a Commodity --</option>
+              <option value="Paddy">Paddy (Dhan)</option>
+              <option value="Wheat">Wheat</option>
+              <option value="Cotton">Cotton</option>
           </select>
           
           <label for="location"><i class="fas fa-map-marker-alt"></i> Select Location:</label>
           <select id="location" name="location">
-              <option>Loading locations...</option>
+              <option value="">-- Select a Location --</option>
+              <option value="Warangal">Warangal</option>
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Karimnagar">Karimnagar</option>
           </select>
           
           <input type="button" value="Get Price" onclick="fetchPrice()">
@@ -117,7 +121,13 @@
 
       <section class="card-section">
         <h2><i class="fas fa-phone"></i> Our Contact</h2>
-        <h1> call 09513886363 for offline service</h1>
+        <p style="font-size:1.2em; font-weight:600; color:#333;">
+          Call 
+          <span style="font-size:2em; font-weight:bold; color:#68a820;">
+            <a href="tel:09513886363" style="text-decoration:none; color:#68a820;">09513886363</a>
+          </span> 
+          for offline service
+        </p>
       </section>
     </div>
 
@@ -139,55 +149,16 @@
   </footer>
 
   <script>
-    const apiKey = "579b464db66ec23bdd000001bfc0f0ea9fa34b1b51ba07f09d6a733d"; // PASTE YOUR API KEY HERE
-    
-    document.addEventListener('DOMContentLoaded', populateDropdowns);
+    // const apiKey = ""; // Disabled: Govt API server is down
 
-    async function populateDropdowns() {
-      const locationSelect = document.getElementById('location');
-      const commoditySelect = document.getElementById('commodity');
+    // Default price data
+    const priceData = {
+      "Paddy_Warangal": { price: 2320, unit: "₹/qtl", date: "2025-01-15" },
+      "Wheat_Hyderabad": { price: 2100, unit: "₹/qtl", date: "2025-01-14" },
+      "Cotton_Karimnagar": { price: 6200, unit: "₹/qtl", date: "2025-01-13" }
+    };
 
-      const marketsUrl = `https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?api-key=${apiKey}&format=json&filters[state]=Telangana&fields=market&limit=500`;
-      const commoditiesUrl = `https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308a1d24?api-key=${apiKey}&format=json&fields=commodity&limit=1000`;
-      
-      try {
-        const [marketsResponse, commoditiesResponse] = await Promise.all([
-          fetch(marketsUrl),
-          fetch(commoditiesUrl)
-        ]);
-
-        const marketsData = await marketsResponse.json();
-        const commoditiesData = await commoditiesResponse.json();
-        
-        if (marketsData.records) {
-          const uniqueMarkets = [...new Set(marketsData.records.map(record => record.market))].sort();
-          locationSelect.innerHTML = '<option value="">-- Select a Location --</option>';
-          uniqueMarkets.forEach(market => {
-            const option = document.createElement('option');
-            option.value = market;
-            option.textContent = market;
-            locationSelect.appendChild(option);
-          });
-        }
-
-        if (commoditiesData.records) {
-          const uniqueCommodities = [...new Set(commoditiesData.records.map(record => record.commodity))].sort();
-          commoditySelect.innerHTML = '<option value="">-- Select a Commodity --</option>';
-          uniqueCommodities.forEach(commodity => {
-            const option = document.createElement('option');
-            option.value = commodity;
-            option.textContent = commodity;
-            commoditySelect.appendChild(option);
-          });
-        }
-      } catch (error) {
-        console.error("Failed to populate dropdowns:", error);
-        locationSelect.innerHTML = '<option>Failed to load data</option>';
-        commoditySelect.innerHTML = '<option>Failed to load data</option>';
-      }
-    }
-
-    async function fetchPrice() {
+    function fetchPrice() {
       const commodity = document.getElementById("commodity").value;
       const location = document.getElementById("location").value;
       const resultDiv = document.getElementById("priceResult");
@@ -197,27 +168,13 @@
         return;
       }
 
-      resultDiv.innerText = "Fetching market price...";
-      const apiUrl = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=${apiKey}&format=json&filters[market]=${location}&filters[commodity]=${commodity}&limit=1`;
+      const key = `${commodity}_${location}`;
+      const record = priceData[key];
 
-      try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error("Network response was not ok.");
-        
-        const data = await response.json();
-
-        if (data.records && data.records.length > 0) {
-          const latestRecord = data.records[0];
-          const price = latestRecord.modal_price;
-          const date = latestRecord.arrival_date;
-          
-          resultDiv.innerHTML = `<strong>${commodity}</strong> in ${location}: ₹${price}/qtl | Updated: ${date}`;
-        } else {
-          resultDiv.innerText = `Sorry, no price data found for ${commodity} in ${location}.`;
-        }
-      } catch (error) {
-        console.error("Fetch Error:", error);
-        resultDiv.innerText = "Could not fetch price data. Please try again later.";
+      if (record) {
+        resultDiv.innerHTML = `<strong>${commodity}</strong> in ${location}: ₹${record.price}/qtl | Updated: ${record.date}`;
+      } else {
+        resultDiv.innerText = `Sorry, no price data found for ${commodity} in ${location}.`;
       }
     }
   </script>
